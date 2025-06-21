@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      # No specific install commands needed for a static HTML site
+      - echo "Installing dependencies (if any)..."
+  pre_build:
+    commands:
+      # No pre-build commands needed for a static HTML site
+      - echo "Pre-build phase..."
+  build:
+    commands:
+      - echo "Build started on `date`"
+      - echo "Packaging static website files..."
+  post_build:
+    commands:
+      - echo "Build completed on `date`"
+artifacts:
+  files:
+    - '**/*' # This means include all files and folders in the artifact
