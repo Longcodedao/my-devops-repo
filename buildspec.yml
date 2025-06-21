@@ -1,21 +1,38 @@
 version: 0.2
 
+# Define the phases of the build process
 phases:
   install:
     commands:
-      # No specific install commands needed for a static HTML site
-      - echo "Installing dependencies (if any)..."
+      # Step 1: Install Node.js dependencies.
+      # 'npm install' reads package.json and downloads all required libraries.
+      - echo "Installing Node.js dependencies..."
+      - npm install
   pre_build:
-    commands:
-      # No pre-build commands needed for a static HTML site
-      - echo "Pre-build phase..."
+    commands: 
+      # Step 2 (Optional): Run any checks or tests before the main build.
+      - echo "Running pre-build checks/tests (if configured)..."
+      # Example: If you have unit tests, you might uncomment this:
+      # - npm test -- --watchAll=false
   build:
     commands:
-      - echo "Build started on `date`"
-      - echo "Packaging static website files..."
+      # Step 3: Build the React application for production.
+      # 'npm run build' executes the "build" script defined in package.json,
+      # which typically creates an optimized 'build' folder.
+      - echo "Building React application..."
+      - npm run build
   post_build:
     commands:
-      - echo "Build completed on `date`"
+      # Step 4 (Optional): Commands after the main build, e.g., cleanup or notifications.
+      - echo "React application build completed."
+
+# Define the artifacts that CodeBuild will output.
+# These are the files that will be passed to the next stage (deployment to S3).
 artifacts:
   files:
-    - '**/*' # This means include all files and folders in the artifact
+    # '**/*' means include all files and folders.
+    # This will take everything from the 'base-directory'.
+    - '**/*'
+  # The 'base-directory' tells CodeBuild to only package the contents
+  # of the 'build' folder, which is where 'npm run build' places the compiled React app.
+  base-directory: build
